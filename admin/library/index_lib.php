@@ -1,4 +1,11 @@
-<?php if($_POST){
+<?php 
+
+if(isLogin()){
+    redirect('dashboard.php');
+}
+
+
+if($_POST){
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -8,15 +15,10 @@
     
     if(mysqli_num_rows($rs)){
         $rec = mysqli_fetch_assoc($rs);
-        
         $_SESSION['admin_user'] = $rec;
-
         redirect('dashboard.php');
-
     }else{
-        $_SESSION['alert']['type'] = 'danger';
-        $_SESSION['alert']['msg'] = 'Incorrect Login Details';
+        addAlert('danger', 'Incorrect Login Details');
         redirect('index.php');
     }
-    
 }

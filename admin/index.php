@@ -22,12 +22,7 @@ require_once('library/index_lib.php');
     
     <h1 class="h3 mb-3 fw-normal text-center">WEBSITE_LOGO<br>Please sign in</h1>
 
-<?php if(isset($_SESSION['alert']) && !empty($_SESSION['alert'])){ ?>
-<div class="alert alert-<?php echo $_SESSION['alert']['type']; ?> alert-dismissible fade show" role="alert">
-<?php echo $_SESSION['alert']['msg']; ?>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php unset($_SESSION['alert']); } ?>
+<?php displayAlert(); ?>
 
     <div class="form-floating">
       <input type="text" class="form-control" id="username" name="username" placeholder="Username">
