@@ -1,21 +1,92 @@
 <?php
 
 checkAdminLogin();
+
 $document_title = 'Add User';
 
+$username = '';
+$email = '';
+$phone = '';
+$fullname = '';
+$status = 0;
+
+
+if(isset($_GET['user_id']) && !empty($_GET['user_id'])){
+    $user_id = $_GET['user_id'];
+    $document_title = 'Edit User : ' . $user_id;
+    $user_data = getUser($user_id);
+    if($user_data){
+    $username = $user_data['username'];
+    $email = $user_data['email'];
+    $phone = $user_data['phone'];
+    $fullname = $user_data['fullname'];
+    $status = $user_data['status'];
+    }else{
+        addAlert('danger', 'User ID not found!');
+        redirect('users.php');
+    }
+}
+
 if($_POST){
-    if(isset($_POST['username']) && !empty($_POST['username']) && isset($_POST['password']) && !empty($_POST['password']) && isset($_POST['fullname']) && !empty($_POST['fullname'])){
+    if(isset($_POST['username']) && !empty($_POST['username']) && isset($_POST['fullname']) && !empty($_POST['fullname'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $confirm = $_POST['confirm'];
         $email = $_POST['email'];
         $phone = $_POST['phone'];
         $fullname = $_POST['fullname'];
         $status = (isset($_POST['status']))?1:0;
-        $sql = "INSERT users SET username='". $username ."', password='". $password ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_added=NOW()";
-        mysqli_query($con, $sql);
-        addAlert('success', 'User added successfully!');
-        redirect('users.php');
+
+        // if(!alreadyExist($con, $username)){
+        if(!alreadyExist($username)){
+            if($confirm == $password){
+                
+                $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_added=NOW()";
+                mysqli_query($con, $sql);
+                addAlert('success', 'User added successfully!');
+                redirect('users.php');
+
+            }else{
+                addAlert('danger', 'Confirm password not matched!');
+            }
+        }else{
+            addAlert('danger', 'Username already exists!');
+        }   
+
     }else{
         addAlert('danger', 'Incomplete form data!');
     }
 }
+
+// function alreadyExist($con, $username){  // without global 
+function alreadyExist($username){
+    global $con;
+    $sql = "SELECT * FROM users WHERE username='". $username ."'";
+    $rs = mysqli_query($con, $sql);
+
+    if(mysqli_num_rows($rs)){
+        return true;
+    }
+    return false;
+}
+
+function getUser($user_id){
+    global $con;
+    $sql = "SELECT * FROM users WHERE user_id='". (int)$user_id ."'";
+    $rs = mysqli_query($con, $sql);
+    $rec = array();
+    if(mysqli_num_rows($rs)){
+        $rec = mysqli_fetch_assoc($rs);
+    }
+
+    return $rec;
+}
+
+/*
+0) password visible option
+1) Update query after submit
+2) avoid empty password update
+3) Username already exists
+
+*/
+

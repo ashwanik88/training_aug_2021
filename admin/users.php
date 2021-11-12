@@ -41,7 +41,7 @@ require_once('library/users_lib.php');
           <td><?php echo $data_user['fullname']; ?></td>
           <td><?php echo ($data_user['status'] == 1)?'Active':'Inactive'; ?></td>
           <td><?php echo changeDate($data_user['date_added']); ?></td>
-          <td>Edit</td>
+          <td><a href="user-form.php?user_id=<?php echo $data_user['user_id']; ?>">Edit</a></td>
         </tr>
         <?php } ?>
       <?php }else{ ?>
