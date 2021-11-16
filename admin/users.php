@@ -19,6 +19,7 @@ require_once('library/users_lib.php');
     <table class="table table-striped table-sm">
       <thead>
         <tr>
+          <th scope="col"><input type="checkbox" onclick="$('.chk').prop('checked', $(this).is(':checked'));" /></th>
           <th scope="col">#</th>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
@@ -34,6 +35,7 @@ require_once('library/users_lib.php');
       <?php if(sizeof($data_users)){ ?>
         <?php foreach($data_users as $data_user){ ?>
         <tr>
+          <td><input type="checkbox" class="chk" /></td>
           <td><?php echo $data_user['user_id']; ?></td>
           <td><?php echo $data_user['username']; ?></td>
           <td><?php echo $data_user['email']; ?></td>
@@ -41,7 +43,12 @@ require_once('library/users_lib.php');
           <td><?php echo $data_user['fullname']; ?></td>
           <td><?php echo ($data_user['status'] == 1)?'Active':'Inactive'; ?></td>
           <td><?php echo changeDate($data_user['date_added']); ?></td>
-          <td><a href="user-form.php?user_id=<?php echo $data_user['user_id']; ?>">Edit</a></td>
+          <td>
+            <a href="user-form.php?user_id=<?php echo $data_user['user_id']; ?>">Edit</a>
+             | 
+            <a href="users.php?action=delete&user_id=<?php echo $data_user['user_id']; ?>" onclick="return confirm('Are you sure want to delete this?');">Delete</a>
+          </td>
+          
         </tr>
         <?php } ?>
       <?php }else{ ?>

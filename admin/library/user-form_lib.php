@@ -3,7 +3,7 @@
 checkAdminLogin();
 
 $document_title = 'Add User';
-
+$user_id = 0;
 $username = '';
 $email = '';
 $phone = '';
@@ -38,12 +38,23 @@ if($_POST){
         $status = (isset($_POST['status']))?1:0;
 
         // if(!alreadyExist($con, $username)){
-        if(!alreadyExist($username)){
+        if(!alreadyExist($username, $user_id)){
             if($confirm == $password){
-                
-                $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_added=NOW()";
+                if($user_id){
+                    $sql = "UPDATE users SET username='". $username ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
+                    addAlert('success', 'User added successfully!');
+
+                    if(!empty($password)){
+                        $sql_pass = "UPDATE users SET password='". md5($password) ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
+                        mysqli_query($con, $sql_pass);
+                    }
+
+                }else{
+                    $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_added=NOW()";
+                    addAlert('success', 'User added successfully!');
+                }
+
                 mysqli_query($con, $sql);
-                addAlert('success', 'User added successfully!');
                 redirect('users.php');
 
             }else{
@@ -59,9 +70,9 @@ if($_POST){
 }
 
 // function alreadyExist($con, $username){  // without global 
-function alreadyExist($username){
+function alreadyExist($username, $user_id){
     global $con;
-    $sql = "SELECT * FROM users WHERE username='". $username ."'";
+    $sql = "SELECT * FROM users WHERE username='". $username ."' AND user_id!='". $user_id ."'";
     $rs = mysqli_query($con, $sql);
 
     if(mysqli_num_rows($rs)){
