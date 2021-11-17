@@ -8,9 +8,11 @@ require_once('library/users_lib.php');
 <?php require_once('common/header.php'); ?> 
 <?php require_once('common/sidebar.php'); ?> 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <form action="" method="POST">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2"><?php echo $document_title; ?></h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <div class=" mb-2 mb-md-0">
+      <input type="submit" value="Delete" class="btn btn-danger" name="btnDelete" onclick="return confirm('Are you sure want to delete this?');" /> 
       <a href="user-form.php" class="btn btn-primary">Add User</a>
     </div>
   </div>
@@ -35,7 +37,7 @@ require_once('library/users_lib.php');
       <?php if(sizeof($data_users)){ ?>
         <?php foreach($data_users as $data_user){ ?>
         <tr>
-          <td><input type="checkbox" class="chk" /></td>
+          <td><input type="checkbox" name="user_ids[]" value="<?php echo $data_user['user_id']; ?>" class="chk" /></td>
           <td><?php echo $data_user['user_id']; ?></td>
           <td><?php echo $data_user['username']; ?></td>
           <td><?php echo $data_user['email']; ?></td>
@@ -58,6 +60,7 @@ require_once('library/users_lib.php');
       </tbody>
     </table>
   </div>
+      </form>
 </main>
 <?php require_once('common/scripts.php'); ?>
 

@@ -35,7 +35,7 @@ require_once('library/index_lib.php');
 
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Remember me
+        <input type="checkbox" name="remember_me" value="remember-me"> Remember me
       </label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>

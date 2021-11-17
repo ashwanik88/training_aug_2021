@@ -3,6 +3,18 @@
 checkAdminLogin();
 $document_title = 'Users';
 
+if($_POST){
+    if(isset($_POST['user_ids']) && !empty($_POST['user_ids'])){
+        foreach($_POST['user_ids'] as $user_id){
+            deleteUser($user_id);
+        }
+        addAlert('success', 'User deleted successfully!');
+        redirect('users.php');
+    }else{
+        addAlert('warning', 'Please select atleast 1 record!');
+    }
+}
+
 
 if(isset($_GET['action']) && !empty($_GET['action'])){
     $action = $_GET['action'];
