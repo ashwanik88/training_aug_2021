@@ -32,10 +32,20 @@ if(isset($_GET['action']) && !empty($_GET['action'])){
     }
 
 }
+$page_start = 10; // 0, 10, 20 | 1, 2, 3
+$page_limit = 10;
+$page = 1;
+$sql_total = "SELECT count(*) as total FROM users";
+$rs_total = mysqli_query($con, $sql_total);
+$rec_total = mysqli_fetch_assoc($rs_total);
+$total_users = $rec_total['total'];
 
+if(isset($_GET['page']) && !empty($_GET['page'])){
+    $page = $_GET['page'];
+    $page_start = ($page - 1) * $page_limit;
+}
 
-$sql = "SELECT * FROM users";
-
+$sql = "SELECT * FROM users LIMIT ". $page_start .", " . $page_limit;
 $rs = mysqli_query($con, $sql);
 
 $data_users = array();
@@ -48,8 +58,13 @@ if(mysqli_num_rows($rs)){
 
 function deleteUser($user_id){
     global $con;
-    $sql = "DELETE FROM users WHERE user_id='". $user_id ."'";
-    mysqli_query($con, $sql);
+    if($user_id != 1){
+        $sql = "DELETE FROM users WHERE user_id='". $user_id ."'";
+        mysqli_query($con, $sql);
+    }else{
+        addAlert('warning', 'You can\'t delete admin user!');
+        redirect('users.php');
+    }
 }
 
 // tasks 9/11/2021

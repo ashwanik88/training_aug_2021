@@ -59,6 +59,16 @@ require_once('library/users_lib.php');
 
       </tbody>
     </table>
+
+  <?php if($total_users > $page_limit){ ?>
+  <nav aria-label="...">
+    <ul class="pagination">
+      <?php for($n = 1; $n <= ceil($total_users / $page_limit); $n++){ ?>
+      <li class="page-item <?php echo ($page == $n)?'active':'';?>"><a class="page-link" href="users.php?page=<?php echo $n; ?>"><?php echo $n; ?></a></li>
+      <?php } ?>
+    </ul>
+  </nav>
+  <?php } ?>
   </div>
       </form>
 </main>
