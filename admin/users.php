@@ -22,8 +22,8 @@ require_once('library/users_lib.php');
       <thead>
         <tr>
           <th scope="col"><input type="checkbox" onclick="$('.chk').prop('checked', $(this).is(':checked'));" /></th>
-          <th scope="col">#</th>
-          <th scope="col">Username</th>
+          <th scope="col"><a href="users.php?sort=user_id&order=<?php echo $order; ?>">ID</a></th>
+          <th scope="col"><a href="users.php?sort=username&order=<?php echo $order; ?>">Username</a></th>
           <th scope="col">Email</th>
           <th scope="col">Phone</th>
           <th scope="col">Fullname</th>
@@ -63,8 +63,18 @@ require_once('library/users_lib.php');
   <?php if($total_users > $page_limit){ ?>
   <nav aria-label="...">
     <ul class="pagination">
+    <?php if($page > 1){ ?>
+      <li class="page-item"><a class="page-link" href="users.php?page=<?php echo $page-1; ?>">Prev</a></li>
+      <?php }else{ ?>
+        <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
+      <?php } ?>
       <?php for($n = 1; $n <= ceil($total_users / $page_limit); $n++){ ?>
       <li class="page-item <?php echo ($page == $n)?'active':'';?>"><a class="page-link" href="users.php?page=<?php echo $n; ?>"><?php echo $n; ?></a></li>
+      <?php } ?>
+      <?php if($page < $n - 1){ ?>
+      <li class="page-item"><a class="page-link" href="users.php?page=<?php echo $page+1; ?>">Next</a></li>
+      <?php }else{ ?>
+        <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Next</a></li>
       <?php } ?>
     </ul>
   </nav>

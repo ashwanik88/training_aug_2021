@@ -32,21 +32,32 @@ if(isset($_GET['action']) && !empty($_GET['action'])){
     }
 
 }
-$page_start = 10; // 0, 10, 20 | 1, 2, 3
+$page_start = 0; 
 $page_limit = 10;
 $page = 1;
-$sql_total = "SELECT count(*) as total FROM users";
+
+$sort = 'user_id';
+$order = 'DESC';
+
+$sql_total = "SELECT count(*) as total FROM users"; // field alias as total
 $rs_total = mysqli_query($con, $sql_total);
 $rec_total = mysqli_fetch_assoc($rs_total);
 $total_users = $rec_total['total'];
 
+
 if(isset($_GET['page']) && !empty($_GET['page'])){
     $page = $_GET['page'];
-    $page_start = ($page - 1) * $page_limit;
+    $page_start = ($page - 1) * $page_limit; // 0, 10, 20 | 1, 2, 3
 }
 
-$sql = "SELECT * FROM users LIMIT ". $page_start .", " . $page_limit;
+if(isset($_GET['sort']) && !empty($_GET['sort']) && isset($_GET['order']) && !empty($_GET['order'])){
+    $sort = $_GET['sort'];
+    $order = $_GET['order'];
+}
+$sql = "SELECT * FROM users ORDER BY ". $sort ." ". $order ." LIMIT ". $page_start .", " . $page_limit;
 $rs = mysqli_query($con, $sql);
+
+$order = ($order == 'ASC')?'DESC':'ASC';
 
 $data_users = array();
 if(mysqli_num_rows($rs)){
