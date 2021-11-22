@@ -38,8 +38,27 @@ $page = 1;
 
 $sort = 'user_id';
 $order = 'DESC';
+$sort_url = '';
+$page_url = '';
 
-$sql_total = "SELECT count(*) as total FROM users"; // field alias as total
+$filter_user_id = '';
+$filter_username = '';
+$filter_email = '';
+$filter_phone = '';
+$filter_fullname = '';
+$filter_status = '';
+$filter_date_added = '';
+$where = ' WHERE 1=1 ';
+if(isset($_GET['filter_user_id']) && !empty($_GET['filter_user_id'])){
+    $filter_user_id = $_GET['filter_user_id'];
+    $where .= " AND user_id='". (int)$filter_user_id ."'";
+}
+if(isset($_GET['filter_username']) && !empty($_GET['filter_username'])){
+    $filter_username = $_GET['filter_username'];
+    $where .= " AND username LIKE '%". $filter_username ."%'";
+}
+
+$sql_total = "SELECT count(*) as total FROM users " . $where; // field alias as total
 $rs_total = mysqli_query($con, $sql_total);
 $rec_total = mysqli_fetch_assoc($rs_total);
 $total_users = $rec_total['total'];
@@ -48,13 +67,17 @@ $total_users = $rec_total['total'];
 if(isset($_GET['page']) && !empty($_GET['page'])){
     $page = $_GET['page'];
     $page_start = ($page - 1) * $page_limit; // 0, 10, 20 | 1, 2, 3
+    $page_url .= '&page='.$page;
 }
 
 if(isset($_GET['sort']) && !empty($_GET['sort']) && isset($_GET['order']) && !empty($_GET['order'])){
-    $sort = $_GET['sort'];
+    $sort = $_GET['sort']; // $this->request->get['']
     $order = $_GET['order'];
+    $sort_url .= '&sort='.$sort;
+    $sort_url .= '&order='.$order;
 }
-$sql = "SELECT * FROM users ORDER BY ". $sort ." ". $order ." LIMIT ". $page_start .", " . $page_limit;
+
+$sql = "SELECT * FROM users ". $where ." ORDER BY ". $sort ." ". $order ." LIMIT ". $page_start .", " . $page_limit;
 $rs = mysqli_query($con, $sql);
 
 $order = ($order == 'ASC')?'DESC':'ASC';
