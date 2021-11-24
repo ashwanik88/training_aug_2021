@@ -8,6 +8,7 @@ $username = '';
 $email = '';
 $phone = '';
 $fullname = '';
+$photo = '';
 $status = 0;
 
 
@@ -20,6 +21,7 @@ if(isset($_GET['user_id']) && !empty($_GET['user_id'])){
     $email = $user_data['email'];
     $phone = $user_data['phone'];
     $fullname = $user_data['fullname'];
+    $photo = $user_data['photo'];
     $status = $user_data['status'];
     }else{
         addAlert('danger', 'User ID not found!');
@@ -40,8 +42,11 @@ if($_POST){
         // if(!alreadyExist($con, $username)){
         if(!alreadyExist($username, $user_id)){
             if($confirm == $password){
+
+                $photo = uploadFile();
+
                 if($user_id){
-                    $sql = "UPDATE users SET username='". $username ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
+                    $sql = "UPDATE users SET username='". $username ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', photo='". $photo ."', status='". (int)$status ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
                     addAlert('success', 'User added successfully!');
 
                     if(!empty($password)){
@@ -50,7 +55,7 @@ if($_POST){
                     }
 
                 }else{
-                    $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', status='". (int)$status ."', date_added=NOW()";
+                    $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', photo='". $photo ."', status='". (int)$status ."', date_added=NOW()";
                     addAlert('success', 'User added successfully!');
                 }
 
@@ -91,6 +96,17 @@ function getUser($user_id){
     }
 
     return $rec;
+}
+
+function uploadFile(){
+    if(isset($_FILES['photo']) && !empty($_FILES['photo'])){
+        $filename = time() . '_'. $_FILES['photo']['name'];
+        $src = $_FILES['photo']['tmp_name'];
+        (copy($src, '../uploads/' . $filename));
+        return $filename;
+    }else{
+        return false;
+    }
 }
 
 /*

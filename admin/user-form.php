@@ -17,7 +17,7 @@ require_once('library/user-form_lib.php');
 
   <?php displayAlert(); ?>
   
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
   <div class="mb-3">
     <label for="username" class="form-label">Username</label>
     <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>">
@@ -41,6 +41,13 @@ require_once('library/user-form_lib.php');
   <div class="mb-3">
     <label for="fullname" class="form-label">Fullname</label>
     <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $fullname; ?>">
+  </div>
+  <div class="mb-3">
+    <label for="photo" class="form-label">Photo</label>
+    <?php if(!empty($photo)){ ?>
+      <img src="../uploads/<?php echo $photo; ?>" width="100px" class="img-thumbnail m-3" />
+    <?php } ?>
+    <input type="file" class="form-control" id="photo" name="photo" />
   </div>
   <div class="mb-3">
     <label for="status" class="form-label">Status</label>

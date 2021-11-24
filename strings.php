@@ -1,5 +1,35 @@
 <?php
-$n = 123;
+echo '<pre>';
+echo $n = 123;   // integer or numbers
+var_dump($n);   // know the data type
+echo $m = 'abc123'; // 
+var_dump($m);
+
+echo $n . $m;   // concatination 
+
+$str = 'Hello ';
+$str .= 'World';
+
+// $str = $str . 'World';
+
+// echo $str;
+
+$arr = array(1,'abc', false);
+
+print_r($arr);
+
+var_dump($arr);
+
+
+// if($n){
+
+//     echo $n;
+// }
+
+// false = 0 = '' = null
+// true = 1 = 'sdfsdf' 
+
+die;
 // $str = "Hello World $n";
 // $str = 'Hello World $n';
 $str = 'Hello World ' . $n;
