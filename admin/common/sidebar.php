@@ -22,9 +22,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="categories.php">
               <span data-feather="users"></span>
-              Customers
+              Manage Categories
             </a>
           </li>
           <li class="nav-item">
