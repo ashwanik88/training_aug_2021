@@ -29,9 +29,26 @@ require_once('library/category-form_lib.php');
     <select class="form-control" id="parent_id" name="parent_id">
       <option value="0">Top Most Parent</option>
 
-      <?php makeCategory(0); ?>
 
-      
+
+      <?php foreach($data_categories as $data_category){ ?>
+        <option style="color: red;" value="<?php echo $data_category['category_id']; ?>"><?php echo $data_category['category_name']; ?></option>
+
+        <?php $data_sub_categories = getCategories($data_category['category_id']); ?>
+
+        <?php foreach($data_sub_categories as $data_sub_category){ ?>
+          <option value="<?php echo $data_sub_category['category_id']; ?>"><?php echo $data_category['category_name']; ?> &raquo; <?php echo $data_sub_category['category_name']; ?></option>
+
+          <?php $data_sub_sub_categories = getCategories($data_sub_category['category_id']); ?>
+
+          <?php foreach($data_sub_sub_categories as $data_sub_sub_category){ ?>
+            <option value="<?php echo $data_sub_sub_category['category_id']; ?>"><?php echo $data_category['category_name']; ?> &raquo; <?php echo $data_sub_category['category_name']; ?> &raquo; <?php echo $data_sub_sub_category['category_name']; ?></option>
+          <?php } ?>
+
+        <?php } ?>
+
+      <?php } ?>
+
 
       
 

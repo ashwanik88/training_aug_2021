@@ -10,7 +10,7 @@ $sort_order = '';
 $photo = '';
 $status = 0;
 
-$data_categories = getCategories(0);
+
 
 
 if(isset($_GET['category_id']) && !empty($_GET['category_id'])){
@@ -106,6 +106,26 @@ function getCategories($parent_id){
         }
     }
     return $data;
+}
+
+function makeCategory($parent_id, $parent_name = ''){
+    $data_categories = getCategories($parent_id);
+    foreach($data_categories as $data_category){
+        echo '<option value="'. $data_category['category_id'] .'">'. getParents($data_category['parent_id']) . $data_category['category_name'] .'</option>';
+
+        makeCategory($data_category['category_id']);    // recursion
+    }
+
+}
+
+function getParents($parent_id){
+    $data_parent = getCategory($parent_id);
+    $html = '';
+    if(sizeof($data_parent)){
+        $html .= getParents($data_parent['parent_id']);
+        $html .= $data_parent['category_name'] .' &raquo; ';
+    }
+    return $html;
 }
 
 function uploadFile(){
