@@ -29,7 +29,7 @@ require_once('library/category-form_lib.php');
     <select class="form-control" id="parent_id" name="parent_id">
       <option value="0">Top Most Parent</option>
 
-      <?php makeCategory(0); ?>
+      <?php makeCategory(0, $parent_id, $category_id); ?>
 
       
 
@@ -63,5 +63,7 @@ require_once('library/category-form_lib.php');
 <?php require_once('common/scripts.php'); ?>
 
 <script src="js/dashboard.js"></script>
-
+<script type="text/javascript">
+// $('select[name="parent_id"]').val('<?php echo $parent_id; ?>');
+</script>
 <?php require_once('common/html_end.php'); ?>

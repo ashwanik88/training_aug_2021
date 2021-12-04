@@ -108,12 +108,22 @@ function getCategories($parent_id){
     return $data;
 }
 
-function makeCategory($parent_id, $parent_name = ''){
+function makeCategory($parent_id, $selected_id = 0, $except_id = 0){
     $data_categories = getCategories($parent_id);
     foreach($data_categories as $data_category){
-        echo '<option value="'. $data_category['category_id'] .'">'. getParents($data_category['parent_id']) . $data_category['category_name'] .'</option>';
+        $selected = '';
+        if($selected_id == $data_category['category_id']){
+            $selected = 'selected="selected"';
+        }
+        if($except_id != $data_category['category_id']){
+            echo '<option '. $selected .' value="'. $data_category['category_id'] .'">'. getParents($data_category['parent_id']) . $data_category['category_name'] .'</option>';
+        }else{
+            // continue;
+            // break;
+             return false;
+        }
 
-        makeCategory($data_category['category_id']);    // recursion
+        makeCategory($data_category['category_id'], $selected_id, $except_id);    // recursion
     }
 
 }
