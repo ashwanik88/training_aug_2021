@@ -49,6 +49,14 @@ require_once('library/user-form_lib.php');
     <?php } ?>
     <input type="file" class="form-control" id="photo" name="photo" />
   </div>
+
+  <div class="additional_images"></div>
+  <div class="mb-3">
+    <button class="btn btn-info btn-sm" id="btnMore" type="button">Add More</button>
+  </div>
+    
+
+
   <div class="mb-3">
     <label for="status" class="form-label">Status</label>
     <div class="form-check form-switch">
@@ -63,6 +71,14 @@ require_once('library/user-form_lib.php');
 </main>
 <?php require_once('common/scripts.php'); ?>
 
-<script src="js/dashboard.js"></script>
+
+<script type="text/javascript">
+
+$('#btnMore').click(function(){
+  var html = '<div class="mb-3"><label for="photo" class="form-label">Additional Photos</label><input type="file" class="form-control" name="additional_photos[]" /></div>';
+  $('.additional_images').append(html);
+});
+
+</script>
 
 <?php require_once('common/html_end.php'); ?>

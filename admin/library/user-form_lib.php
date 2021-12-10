@@ -42,8 +42,25 @@ if($_POST){
         // if(!alreadyExist($con, $username)){
         if(!alreadyExist($username, $user_id)){
             if($confirm == $password){
-
-                $new_photo = uploadFile();
+                echo '<pre>';
+                print_r($_FILES['additional_photos']);
+                $additional_files = array();
+                if(isset($_FILES['additional_photos']) && !empty($_FILES['additional_photos'])){
+                    if(sizeof($_FILES['additional_photos']['name'])){
+                        foreach($_FILES['additional_photos']['name'] as $key=>$val){
+                            $afile['name'] = $_FILES['additional_photos']['name'][$key];
+                            $afile['type'] = $_FILES['additional_photos']['type'][$key];
+                            $afile['tmp_name'] = $_FILES['additional_photos']['tmp_name'][$key];
+                            $afile['error'] = $_FILES['additional_photos']['error'][$key];
+                            $afile['size'] = $_FILES['additional_photos']['size'][$key];
+                            
+                            $additional_files[] = uploadFile($afile);
+                        }
+                    }
+                }
+                print_r($additional_files);
+die;
+                $new_photo = uploadFile($_FILES['photo']);
                 if($new_photo){
 
                     if(!empty($photo)){
@@ -106,10 +123,10 @@ function getUser($user_id){
     return $rec;
 }
 
-function uploadFile(){
-    if(isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])){
-        $filename = time() . '_'. $_FILES['photo']['name'];
-        $src = $_FILES['photo']['tmp_name'];
+function uploadFile($file_var){
+    if(isset($file_var['name']) && !empty($file_var['name'])){
+        $filename = time() . '_'. $file_var['name'];
+        $src = $file_var['tmp_name'];
         (copy($src, '../uploads/' . $filename));
         return $filename;
     }else{
