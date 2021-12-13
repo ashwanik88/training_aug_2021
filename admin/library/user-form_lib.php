@@ -42,8 +42,6 @@ if($_POST){
         // if(!alreadyExist($con, $username)){
         if(!alreadyExist($username, $user_id)){
             if($confirm == $password){
-                echo '<pre>';
-                print_r($_FILES['additional_photos']);
                 $additional_files = array();
                 if(isset($_FILES['additional_photos']) && !empty($_FILES['additional_photos'])){
                     if(sizeof($_FILES['additional_photos']['name'])){
@@ -58,22 +56,19 @@ if($_POST){
                         }
                     }
                 }
-                print_r($additional_files);
-die;
+
                 $new_photo = uploadFile($_FILES['photo']);
                 if($new_photo){
-
                     if(!empty($photo)){
                         unlink( '../uploads/' . $photo);
                     }
-
                     $photo = $new_photo;
                 }
 
                 if($user_id){
                     $sql = "UPDATE users SET username='". $username ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', photo='". $photo ."', status='". (int)$status ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
                     addAlert('success', 'User added successfully!');
-
+                    mysqli_query($con, $sql);
                     if(!empty($password)){
                         $sql_pass = "UPDATE users SET password='". md5($password) ."', date_modified=NOW() WHERE user_id='". $user_id ."'";
                         mysqli_query($con, $sql_pass);
@@ -82,9 +77,19 @@ die;
                 }else{
                     $sql = "INSERT users SET username='". $username ."', password='". md5($password) ."', email='". $email ."', phone='". $phone ."', fullname='". $fullname ."', photo='". $photo ."', status='". (int)$status ."', date_added=NOW()";
                     addAlert('success', 'User added successfully!');
+                    $rs = mysqli_query($con, $sql);
+                    $user_id = mysqli_insert_id($con);
                 }
 
-                mysqli_query($con, $sql);
+                if(sizeof($additional_files)){
+                    foreach($additional_files as $additional_file){
+                        $sql_photos = "INSERT INTO users_photos SET user_id='". $user_id ."', filename='". $additional_file ."', date_added=NOW()";
+                        mysqli_query($con, $sql_photos);
+                    }
+                }
+                
+
+                
                 redirect('users.php');
 
             }else{
