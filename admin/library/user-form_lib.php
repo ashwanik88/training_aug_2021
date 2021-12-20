@@ -10,12 +10,13 @@ $phone = '';
 $fullname = '';
 $photo = '';
 $status = 0;
-
+$user_uploads = array();
 
 if(isset($_GET['user_id']) && !empty($_GET['user_id'])){
     $user_id = $_GET['user_id'];
     $document_title = 'Edit User : ' . $user_id;
     $user_data = getUser($user_id);
+    $user_uploads = getUserUploads($user_id);
     if($user_data){
     $username = $user_data['username'];
     $email = $user_data['email'];
@@ -137,6 +138,20 @@ function uploadFile($file_var){
     }else{
         return false;
     }
+}
+
+
+function getUserUploads($user_id){
+    global $con;
+    $sql = "SELECT * FROM users_photos WHERE user_id='". (int)$user_id ."'";
+    $rs = mysqli_query($con, $sql);
+    $data = array();
+    if(mysqli_num_rows($rs)){
+        while($rec = mysqli_fetch_assoc($rs)){
+            $data[] = $rec;
+        }
+    }
+    return $data;
 }
 
 /*

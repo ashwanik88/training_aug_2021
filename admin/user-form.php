@@ -49,8 +49,31 @@ require_once('library/user-form_lib.php');
     <?php } ?>
     <input type="file" class="form-control" id="photo" name="photo" />
   </div>
+    
+  <?php if(sizeof($user_uploads)){ ?>
+  <table class="table table-bordered table-sm">
+    <tr>
+      <th>ID</th>
+      <th>Image</th>
+      <th>Dated</th>
+      <th>Action</th>
+    </tr>
+    <?php foreach($user_uploads  as $user_upload){ ?>
+    <tr>
+      <td><?php echo $user_upload['user_photo_id']; ?></td>
+      <td>
+      <?php if(!empty($user_upload['filename'])){ ?>
+      <img src="../uploads/<?php echo $user_upload['filename']; ?>" width="100px" class="img-thumbnail m-3" />
+    <?php } ?></td>
+      <td><?php echo $user_upload['date_added']; ?></td>
+      <td><a href="" class="btn btn-danger btn-sm">Delete</a></td>
+    </tr>
+    <?php }?>
+  </table>
+  <?php } ?>
 
   <div class="additional_images"></div>
+
   <div class="mb-3">
     <button class="btn btn-info btn-sm" id="btnMore" type="button">Add More</button>
   </div>
