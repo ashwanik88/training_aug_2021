@@ -1,48 +1,16 @@
-<?php
-	ini_set('display_errors', true);
-	error_reporting(E_ALL);
-
-	$a = '';
-	$b = '';
-	$c = '';
-	if($_POST){
-		$resp = array('success' => false, 'msg' => 'Something went wrong 123');
-
-		if(isset($_POST['txt1']) && !empty($_POST['txt1'])){
-			$a  = $_POST['txt1'];
-		}
-		if(isset($_POST['txt2']) && !empty($_POST['txt2'])){
-			$b  = $_POST['txt2'];
-		}
-
-		if(is_numeric($a) && is_numeric($b)){
-			$o = $_POST['btnSubmit'];
-			switch($o){
-				case '+':
-					$c = $a + $b;
-				break;
-				case '-':
-					$c = $a - $b;
-				break;
-			}
-			$resp['result'] = $c;
-			$resp['success'] = true;
-		}
-
-		echo json_encode($resp);
-		die;
-		// die; // exit;
-	}
-	
-?>
 <!doctype html>
 <html>
 <head>
 	<title>Add Numbers</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 </head>
 <body>
-<form action="" method="POST" id="frm">
-<table border="1" cellpadding="10" cellspacing="0">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 mt-3 m-auto">
+		<form action="" method="POST" id="frm">
+<table class="table table-bordered">
 
 	<tr>
 		<td>Enter First Number</td>
@@ -61,24 +29,26 @@
 
 	<tr>
 		<td></td>
-		<td><input type="submit" value="+" name="btnSubmit" /> 
-		<input type="submit" value="-" name="btnSubmit" /></td>
+		<td><input type="button" value="+" name="btnSubmit" class="btn btn-primary" /> 
+		<input type="button" value="-" name="btnSubmit" class="btn btn-primary" />
+		<i class="fas fa-spinner fa-pulse fa-3x fa-fw d-none loading"></i>
+	</td>
 	</tr>
 
 	
 </table>
 </form>
+		</div>
+	</div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 var btnType;
 $('input[name="btnSubmit"]').click(function(){
 	btnType = $(this).val();
-});
-$('#frm').submit(function(){
-
 	$.ajax({
 		type	: 'POST',	// GET
-		url	: 'ajax.php',
+		url	: 'response.php',
 		dataType: 'JSON',	// HTML, XML, TEXT
 		data	:	{
 			txt1: $('input[name="txt1"]').val(),
@@ -93,10 +63,14 @@ $('#frm').submit(function(){
 			}
 		},
 		complete: function(){
-			alert('complete');
+			// alert('complete');
+			$('.loading').addClass('d-none');
+			$('input[name="btnSubmit"]').attr('disabled', false);
 		},
 		beforeSend: function(){
-			alert('before send');
+			$('.loading').removeClass('d-none');
+			$('input[name="btnSubmit"]').attr('disabled', true);
+			// alert('before send');
 		}
 
 
