@@ -30,6 +30,7 @@ require_once('library/index_lib.php');
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      <input type="button" value="show password" id="btnPassword" />
       <label for="floatingPassword">Password</label>
     </div>
 
@@ -42,7 +43,18 @@ require_once('library/index_lib.php');
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
   </form>
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+<script type="text/javascript">
+$('#btnPassword').click(function showPassword(){
+  if($('#password').attr('type') == 'password'){
+    $('#password').attr('type', 'text');
+    $('#btnPassword').val('hide password');
+  }else{
+    $('#password').attr('type', 'password');
+    $('#btnPassword').val('show password');
+  }
+});
+</script>
   </body>
 </html>
