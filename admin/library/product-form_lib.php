@@ -61,7 +61,7 @@ if($_POST){
                 }
 
                 if($product_id){
-                    $sql = "UPDATE products SET productname='". $productname ."', email='". $email ."', description='". $description ."', price='". $price ."', photo='". $photo ."', status='". (int)$status ."', date_modified=NOW() WHERE product_id='". $product_id ."'";
+                    $sql = "UPDATE products SET productname='". $productname ."', description='". $description ."', price='". $price ."', photo='". $photo ."', status='". (int)$status ."', date_modified=NOW() WHERE product_id='". $product_id ."'";
                     addAlert('success', 'Product added successfully!');
                     mysqli_query($con, $sql);
                     if(!empty($password)){
@@ -70,7 +70,7 @@ if($_POST){
                     }
 
                 }else{
-                    $sql = "INSERT products SET productname='". $productname ."', password='". md5($password) ."', email='". $email ."', description='". $description ."', price='". $price ."', photo='". $photo ."', status='". (int)$status ."', date_added=NOW()";
+                    $sql = "INSERT products SET productname='". $productname ."', description='". $description ."', price='". $price ."', photo='". $photo ."', status='". (int)$status ."', date_added=NOW()";
                     addAlert('success', 'Product added successfully!');
                     $rs = mysqli_query($con, $sql);
                     $product_id = mysqli_insert_id($con);
