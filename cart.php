@@ -5,10 +5,10 @@
 <?php require_once('common/body_start.php'); ?>
 <?php require_once('common/header.php'); ?>
 
-<?php if(isset($_SESSION['cart']) && !empty($_SESSION['cart'])){ 
+<?php echo '<pre>'; print_r($_SESSION['cart']); if(isset($_SESSION['cart']) && !empty($_SESSION['cart'])){ 
     foreach($_SESSION['cart'] as $product_id){
         $product_data = getProduct($product_id);
-        print_r($product_data);
+        
     }
 
  }else{

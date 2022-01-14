@@ -33,13 +33,14 @@
                     <div class="position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="img/portfolio-1.jpg" alt="">
                         <div class="portfolio-overlay">
-                            <a class="btn btn-square btn-outline-light mx-1" href="img/portfolio-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-square btn-outline-light mx-1" href="product.php?product_id=<?php echo $data_product['product_id'];?>" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a>
                         </div>
                     </div>
                     <div class="border border-5 border-light border-top-0 p-4">
                         <p class="text-primary fw-medium mb-2"><?php echo $data_product['productname']; ?></p>
                         <h5 class="lh-base mb-0"><?php echo priceFormat($data_product['price']); ?>
+                        <input type="number" name="qty" data-id="<?php echo $data_product['product_id']; ?>" />
                         <a href="javascript:void(0);" class="btn btn-warning btnCart" data-id="<?php echo $data_product['product_id']; ?>">Add to cart</a>
                     </div>
                 </div>
@@ -64,12 +65,15 @@
 <script type="text/javascript">
 $('.btnCart').click(function(){
     var id = $(this).attr('data-id');
+    var qty = $('input[name="qty"][data-id="'+ id +'"]').val();
+    alert(qty);
     $.ajax({
         type: 'GET',
         url: 'cart-ajax.php',
         dataType: 'json',
         data: {
             product_id: id,
+            qty: qty,
         },
         success: function(json){
             console.log(json);
