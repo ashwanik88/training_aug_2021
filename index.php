@@ -40,7 +40,7 @@
                     <div class="border border-5 border-light border-top-0 p-4">
                         <p class="text-primary fw-medium mb-2"><?php echo $data_product['productname']; ?></p>
                         <h5 class="lh-base mb-0"><?php echo priceFormat($data_product['price']); ?>
-                        <a href="javascript:void(0);" class="btn btn-warning">Add to cart</a>
+                        <a href="javascript:void(0);" class="btn btn-warning btnCart" data-id="<?php echo $data_product['product_id']; ?>">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -61,4 +61,20 @@
 
 <?php require_once('common/footer.php');?>
 <?php require_once('common/script.php');?>
+<script type="text/javascript">
+$('.btnCart').click(function(){
+    var id = $(this).attr('data-id');
+    $.ajax({
+        type: 'GET',
+        url: 'cart-ajax.php',
+        dataType: 'json',
+        data: {
+            product_id: id,
+        },
+        success: function(json){
+            console.log(json);
+        }
+    });
+});
+    </script>
 <?php require_once('common/html_end.php');?>
